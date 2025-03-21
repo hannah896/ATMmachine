@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using UnityEngine;
@@ -7,6 +7,8 @@ using UnityEngine;
 public class UserData
 {
     public string userName;
+    public string ID;
+    public string PW;
     public int cash;
     public int balance;
 

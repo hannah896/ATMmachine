@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -37,9 +37,10 @@ public class PopupBank : MonoBehaviour
             panel.SetActive(true);
             return;
         }
-        Debug.Log("Ã³¸®ÇØµå·È½À´Ï´Ù~");
+        Debug.Log("ì²˜ë¦¬í•´ë“œë ¸ìŠµë‹ˆë‹¤~");
         GameManager.Instance.userData.cash -= value;
         GameManager.Instance.userData.balance += value;
+        GameManager.Instance.SaveData();
         Refresh();
     }
 
@@ -56,9 +57,10 @@ public class PopupBank : MonoBehaviour
             panel.SetActive(true);
             return;
         }
-        Debug.Log("Ã³¸®ÇØµå·È½À´Ï´Ù~");
+        Debug.Log("ì²˜ë¦¬í•´ë“œë ¸ìŠµë‹ˆë‹¤~");
         GameManager.Instance.userData.balance -= value;
         GameManager.Instance.userData.cash += value;
+        GameManager.Instance.SaveData();
         Refresh();
     }
 
