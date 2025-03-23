@@ -10,15 +10,20 @@ public class PopupSignup : MonoBehaviour
     public InputField idInput;
     public InputField pwInput;
     public InputField pwconformInput;
+    
     public GameObject panel;
-    public Button SignupPanel;
-    public Button Cancel;
+    public GameObject screen;
+
+    public Button SignupBtn;
+    public Button CancelBtn;
+
+    public Text error;
 
     public void Signup()
     {
-        if ((nameInput == null) || (idInput == null) || (pwInput == null) || (pwconformInput == null) || (pwconformInput != pwInput))
+        if (!Check())
         {
-            panel.SetActive(true);
+            return;
         }
 
         UserData data = GameManager.Instance.userData;
@@ -32,5 +37,52 @@ public class PopupSignup : MonoBehaviour
         data.cash = 115000;
 
         GameManager.Instance.SaveData();
+        Clear();
+    }
+
+    public void Cancel()
+    {
+        gameObject.SetActive(false);
+        screen.SetActive(true);
+    }
+
+    private bool Check()
+    {
+        if (nameInput.text == null)
+        {
+            error.text = "이름을 확인해주세요.";
+        }
+        else if (idInput.text == null)
+        {
+            error.text = "ID를 확인해주세요.";
+        }
+        else if (pwInput.text == null)
+        {
+            error.text = "PW를 확인해주세요.";
+        }
+        else if (pwconformInput.text == null)
+        {
+            error.text = "PW확인란은 확인해주세요.";
+        }
+        else if (pwconformInput.text != pwInput.text)
+        {
+            error.text = "PW가 일치하지 않습니다.";
+        }
+        else
+        {
+            Debug.Log("성공!");
+            return true;
+        }
+        panel.SetActive(true);
+        Clear();
+        return false;
+    }
+
+    private void Clear()
+    {
+        nameInput.text = string.Empty;
+        idInput.text = string.Empty;
+        pwInput.text = string.Empty;
+        pwconformInput.text = string.Empty;
     }
 }

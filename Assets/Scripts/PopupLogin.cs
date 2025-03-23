@@ -21,13 +21,16 @@ public class PopupLogin : MonoBehaviour
     private void Start()
     {
         SignUPBtn.onClick.AddListener(Signup);
+        LoginBtn.onClick.AddListener(Login);
     }
 
     public void Login()
     {
         this.id = _id.text;
         this.pw = _pw.text;
-        if (GameManager.Instance.LoadData(this.id)&&GameManager.Instance.userData.PW.Equals(pw))
+        
+        if (GameManager.Instance.LoadData(this.id, GameManager.Instance.userData)&&
+            GameManager.Instance.userData.PW.Equals(pw))
         {
             gameObject.SetActive(false);
             nextPage.SetActive(true);

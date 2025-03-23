@@ -8,13 +8,16 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public UserData userData;
-    
+    public UserData receiverData;
+
+    public string userID;
     public string userName;
     
     public int cash = 50000;
     public int balance = 100000;
 
-    private string path = "";
+    private string indexPath;
+
 
     private void Awake()
     {
@@ -28,7 +31,8 @@ public class GameManager : MonoBehaviour
         }
 
         userData = new UserData(userName, cash, balance);
-        path = Application.persistentDataPath;
+
+        indexPath = Path.Combine(Application.persistentDataPath, "UserIndex.txt");
     }
 
     void Start()
@@ -39,22 +43,28 @@ public class GameManager : MonoBehaviour
         balance = userData.balance;
     }
 
+    public void SaveData(UserData user)
+    {
+        //유저정보 파일 생성
+        string savePath = Path.Combine(Application.persistentDataPath, $"{user.ID}.txt");
+        string saveData = JsonUtility.ToJson(user);
+        File.WriteAllText(savePath, saveData);
+        Debug.Log($"저장 완료: {savePath}");
+    }
+
     public void SaveData()
     {
-        path += $"{userData.ID}.txt";
-        string saveData = JsonUtility.ToJson(userData);
-        //앞에는 저장 경로, 뒤에는 저장할 내용을json으로 바꿔서 저장
-        File.WriteAllText(path, saveData);
+        SaveData(userData);
     }
-    
-    public bool LoadData(string id)
+
+    public bool LoadData(string id, UserData user)
     {
-        path += Application.persistentDataPath + $"{id}.txt";
-        //읽어오는거라 경로만 있으면 됨.
-        if (File.Exists(path))
+        string loadPath = Path.Combine(Application.persistentDataPath, $"{id}.txt");
+        Debug.Log(loadPath);
+        if (File.Exists(loadPath))
         {
-            string LoadData = File.ReadAllText(path);
-            userData = JsonUtility.FromJson<UserData>(LoadData);
+            string loadData = File.ReadAllText(loadPath);
+            user = JsonUtility.FromJson<UserData>(loadData);
             return true;
         }
         else
@@ -62,8 +72,10 @@ public class GameManager : MonoBehaviour
             return false;
         }
     }
+
+
     public bool LoadData()
     {
-        return LoadData(userData.ID);
+        return LoadData(userData.ID, userData);
     }
 }
