@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
         userData = new UserData(userName, cash, balance);
 
         indexPath = Path.Combine(Application.persistentDataPath, "UserIndex.txt");
+        Instance.userData.ID = "";
+        Instance.userData.PW = "";
     }
 
     void Start()
@@ -57,7 +59,7 @@ public class GameManager : MonoBehaviour
         SaveData(userData);
     }
 
-    public bool LoadData(string id, UserData user)
+    public bool LoadData(string id, ref UserData user)
     {
         string loadPath = Path.Combine(Application.persistentDataPath, $"{id}.txt");
         Debug.Log(loadPath);
@@ -65,6 +67,7 @@ public class GameManager : MonoBehaviour
         {
             string loadData = File.ReadAllText(loadPath);
             user = JsonUtility.FromJson<UserData>(loadData);
+
             return true;
         }
         else
@@ -76,6 +79,6 @@ public class GameManager : MonoBehaviour
 
     public bool LoadData()
     {
-        return LoadData(userData.ID, userData);
+        return LoadData(userData.ID, ref userData);
     }
 }

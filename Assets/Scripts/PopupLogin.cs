@@ -28,8 +28,8 @@ public class PopupLogin : MonoBehaviour
     {
         this.id = _id.text;
         this.pw = _pw.text;
-        
-        if (GameManager.Instance.LoadData(this.id, GameManager.Instance.userData)&&
+        GameManager.Instance.LoadData(this.id, ref GameManager.Instance.userData);
+        if (GameManager.Instance.userData.ID.Equals(id)&&
             GameManager.Instance.userData.PW.Equals(pw))
         {
             gameObject.SetActive(false);

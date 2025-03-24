@@ -23,6 +23,11 @@ public class PopupBank : MonoBehaviour
     public InputField _name;
     public InputField _money;
 
+    private void OnEnable()
+    {
+        Refresh();
+    }
+
     private void Start()
     {
         Refresh();
@@ -79,6 +84,7 @@ public class PopupBank : MonoBehaviour
     {
         Debug.Log("처리해드렸습니다~");
         GameManager.Instance.receiverData.balance += value;
+        GameManager.Instance.SaveData();
         GameManager.Instance.SaveData(GameManager.Instance.receiverData);
         Refresh();
     }
@@ -93,6 +99,7 @@ public class PopupBank : MonoBehaviour
         Debug.Log("처리해드렸습니다~");
         GameManager.Instance.userData.balance -= value;
         GameManager.Instance.SaveData();
+        GameManager.Instance.SaveData(GameManager.Instance.receiverData);
         Refresh();
     }
 
@@ -101,6 +108,8 @@ public class PopupBank : MonoBehaviour
         if (!Check(_name, _money)) return;
         withdrawR(int.Parse(_money.text));
         depositR(int.Parse(_money.text));
+        GameManager.Instance.SaveData();
+        GameManager.Instance.SaveData(GameManager.Instance.receiverData);
     }
 
     private bool Check(InputField name, InputField money)
@@ -124,7 +133,7 @@ public class PopupBank : MonoBehaviour
         GameManager.Instance.userID = name.text;
 
         //실제 있는 대상인지 확인하기
-        if (!GameManager.Instance.LoadData(name.text, GameManager.Instance.receiverData))
+        if (!GameManager.Instance.LoadData(name.text, ref GameManager.Instance.receiverData))
         {
             error.SetActive(true);
             Error.text = "대상이 없습니다.";
